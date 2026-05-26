@@ -49,7 +49,7 @@ const Footer = () => {
               <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
             </ul>
           </div>
-
+{/* */}
           {/* Resources */}
           <div>
             <h3 className="text-purple-500 font-semibold mb-6">Resources</h3>
