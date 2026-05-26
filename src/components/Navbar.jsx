@@ -47,7 +47,7 @@ const Navbar = () => {
           </div>
             <span className="h-5 w-px bg-white/20" />
             <Link
-              href="/signin"
+              href="/auth/signin"
               className="text-purple-400 hover:text-purple-300"
             >
               Sign In
