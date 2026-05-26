@@ -4,15 +4,29 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
 import { Menu, X } from "lucide-react";
+import { useSession, signOut } from "@/lib/auth-client"; // signOut import kora holo
 
 const Navbar = () => {
+  const { data: session, isPending } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const user = session?.user;
 
   const navLinks = [
     { name: "Browse Jobs", href: "/jobs" },
     { name: "Company", href: "/company" },
     { name: "Pricing", href: "/pricing" },
   ];
+
+  // Sign out handler
+  const handleSignOut = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          window.location.reload(); // Sign out er por refresh korbe
+        },
+      },
+    });
+  };
 
   return (
     <nav className="w-full fixed top-0 z-50 bg-[#0f0f0f]/80 backdrop-blur-md border-b border-white/10">
@@ -28,7 +42,7 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* RIGHT: Menu + Button */}
+        {/* RIGHT: Desktop Menu */}
         <div className="hidden md:flex items-center gap-6 ml-auto">
           
           {/* Menu Container */}
@@ -42,54 +56,91 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
-
-
           </div>
-            <span className="h-5 w-px bg-white/20" />
-            <Link
-              href="/auth/signin"
-              className="text-purple-400 hover:text-purple-300"
-            >
-              Sign In
-            </Link>
 
-          {/* CTA Button */}
-          <Button className="bg-white text-black rounded-xl px-5">
-            Get Started
-          </Button>
+          <span className="h-5 w-px bg-white/20" />
+
+          {/* Session loading state vs logged in/out logic */}
+          {isPending ? (
+            <div className="w-20 h-8 bg-white/10 animate-pulse rounded-xl" /> // Skeleton loading
+          ) : user ? (
+            <>
+              <span className="text-sm text-zinc-400">Hi, {user.name.split(" ")[0]}</span>
+              <Button 
+                onClick={handleSignOut} 
+                variant="flat" 
+                color="danger" 
+                className="rounded-xl px-4"
+              >
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/auth/signin"
+                className="text-purple-400 hover:text-purple-300 text-sm font-medium"
+              >
+                Sign In
+              </Link>
+              <Button className="bg-white text-black rounded-xl px-5">
+                Get Started
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile Toggle */}
         <button
-          className="md:hidden text-white ml-auto"
+          className="md:hidden text-white ml-auto focus:outline-none"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {isOpen ? <X /> : <Menu />}
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden px-4 pb-4">
-          <div className="bg-[#1a1a1a] rounded-xl p-4 flex flex-col gap-4">
+          <div className="bg-[#1a1a1a] rounded-xl p-4 flex flex-col gap-4 border border-zinc-800">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-gray-300"
+                className="text-gray-300 py-1"
                 onClick={() => setIsOpen(false)}
               >
                 {link.name}
               </Link>
             ))}
 
-            <Link href="/signin" className="text-purple-400">
-              Sign In
-            </Link>
+            <hr className="border-zinc-800 my-1" />
 
-            <Button className="bg-white text-black w-full">
-              Get Started
-            </Button>
+            {isPending ? (
+              <div className="w-full h-10 bg-white/10 animate-pulse rounded-xl" />
+            ) : user ? (
+              <Button 
+                onClick={() => { handleSignOut(); setIsOpen(false); }} 
+                variant="flat" 
+                color="danger" 
+                className="w-full"
+              >
+                Sign Out
+              </Button>
+            ) : (
+              <>
+                <Link 
+                  href="/auth/signin" 
+                  className="text-purple-400 text-center py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Sign In
+                </Link>
+                <Button className="bg-white text-black w-full">
+                  Get Started
+                </Button>
+              </>
+            )}
           </div>
         </div>
       )}
