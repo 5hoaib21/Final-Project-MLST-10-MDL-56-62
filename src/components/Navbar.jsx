@@ -8,7 +8,7 @@ import { useSession, signOut } from "@/lib/auth-client"; // signOut import kora 
 
 const Navbar = () => {
   const { data: session, isPending } = useSession();
-  console.log('session data in Navbar:', session, "is pending:", isPending);
+  // console.log('session data in Navbar:', session, "is pending:", isPending);
   const [isOpen, setIsOpen] = useState(false);
   const user = session?.user;
 
