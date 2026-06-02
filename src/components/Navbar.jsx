@@ -8,6 +8,7 @@ import { useSession, signOut } from "@/lib/auth-client"; // signOut import kora 
 
 const Navbar = () => {
   const { data: session, isPending } = useSession();
+  console.log('session data in Navbar:', session, "is pending:", isPending);
   const [isOpen, setIsOpen] = useState(false);
   const user = session?.user;
 
@@ -65,7 +66,7 @@ const Navbar = () => {
             <div className="w-20 h-8 bg-white/10 animate-pulse rounded-xl" /> // Skeleton loading
           ) : user ? (
             <>
-              <span className="text-sm text-zinc-400">Hi, {user.name.split(" ")[0]}</span>
+              <span className="text-sm text-zinc-400">Hi, {user.name.split(" ")[0]}. !</span>
               <Button 
                 onClick={handleSignOut} 
                 variant="flat" 

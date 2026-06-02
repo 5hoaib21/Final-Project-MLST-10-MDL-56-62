@@ -2,6 +2,7 @@
 
 import { Card } from "@heroui/react";
 import { FaBriefcase, FaBuilding, FaUsers, FaStar } from "react-icons/fa";
+import { motion } from "motion/react"
 
 const stats = [
   { icon: <FaBriefcase />, value: "50K", label: "Active Jobs" },
@@ -37,6 +38,8 @@ const StateSection = () => {
           <br />
           find their dream positions.
         </h2>
+        {/* <motion.p animate={{rotate: -45}}>Remote Jobs</motion.p>
+         <motion.p initial={{scale: 0}} animate={{scale: 1}}>Remote Jobs</motion.p> */}
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((item) => (
