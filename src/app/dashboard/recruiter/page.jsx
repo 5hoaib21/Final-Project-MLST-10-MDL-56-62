@@ -29,7 +29,7 @@ const RecruiterDashboardHomePage = () => {
     isPending,
   );
   return (
-    <div className="mx-10">
+    <div className="">
       <h1 className="text-2xl font-bold">
         Welcome back, <span className="text-blue-600">{user?.name}.!</span>
       </h1>

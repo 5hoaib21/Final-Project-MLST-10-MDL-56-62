@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 import {
   Form,
   Fieldset,
@@ -13,18 +14,18 @@ import {
   ListBox,
   Switch,
   Button,
-  toast,
+  // toast
 } from "@heroui/react";
 import { Briefcase, Globe } from "@gravity-ui/icons";
+import { createJob } from "@/lib/actions/jobs";
+import { redirect } from "next/navigation";
 
 export default function PostJobPage() {
-  // Hydration mismatch ফিক্স করার জন্য মাউন্ট স্টেট
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Mock configuration for recruiter's authenticated state
   const [mockCompany] = useState({
     name: "Acme Corp (Auto-filled)",
     id: "company_123",
@@ -75,9 +76,13 @@ export default function PostJobPage() {
       isPubliclyVisible: true,
     };
 
-    // অ্যাকশন ইমপোর্ট এবং রিডাইরেক্ট বাইরের কোড হওয়ায় এখানে কনসোল লগ করে দেওয়া হলো
-    console.log("Submitting Valid Payload:", payload);
-    toast.success("Job posted successfully!");
+    const res = await createJob(payload);
+    if(res.insertedId){
+      e.target.reset();
+      toast.success("Job posted successfully!");
+      setIsRemote(false);
+      redirect('/dashboard/recruiter')
+    }
   };
 
   const textInputClass =
@@ -291,13 +296,15 @@ export default function PostJobPage() {
                   </div>
                 </div>
 
-                <Select
-                  className="w-full mt-6"
-                  name="currency"
+                {/* ফিক্সড কারেন্সি সিলেক্ট বক্স: placeholder="Currency" এবং defaultSelectedKeys সেট করা হয়েছে */}
+                <Select 
+                  className="w-full mt-6" 
+                  name="currency" 
+                  placeholder="Currency"
                   defaultSelectedKeys={["USD"]}
                 >
                   <Select.Trigger className={triggerClasses}>
-                    <Select.Value />
+                    <Select.Value className="text-white placeholder:text-zinc-600" />
                     <Select.Indicator />
                   </Select.Trigger>
                   <Select.Popover className={popoverClasses}>
@@ -336,7 +343,6 @@ export default function PostJobPage() {
                     Location
                   </span>
 
-                  {/* ফিক্সড কাস্টম সুইচ: Render Props মেথড ও onChange দিয়ে আপডেট করা হয়েছে */}
                   <Switch
                     isSelected={isRemote}
                     onChange={setIsRemote}
