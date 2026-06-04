@@ -14,6 +14,8 @@ import {
     Button
 } from '@heroui/react';
 import { ArrowUpToLine, Globe, Factory, ArrowRight, Pencil, ChevronDown } from '@gravity-ui/icons';
+import { createCompany } from '@/lib/actions/companies';
+import toast from 'react-hot-toast';
 
 // Layout Shared Style Constants matching your design image
 const textInputClass = "w-full bg-zinc-900/50 border border-zinc-800 text-white rounded-lg px-3 py-2.5 outline-none placeholder:text-zinc-600 focus:border-zinc-700 transition";
@@ -103,7 +105,16 @@ export default function CompanyProfile({ recruiterCompany }) {
             status: company?.status || 'Pending' // প্রথমবার রেজিষ্ট্রেশনে ডিফল্ট Pending থাকবে
         };
 
-        console.log('submitted company profile data:', company);
+        console.log('submitted company profile data:', updatedCompanyData);
+
+
+        const payload = await createCompany(updatedCompanyData)
+
+        if(payload.insertedId) {
+            toast.success('company profile created successfully')
+        }
+
+
 
         // লোকাল স্টেট আপডেট ও এডিট মোড ক্লোজ
         setCompany(updatedCompanyData);
