@@ -103,6 +103,8 @@ export default function CompanyProfile({ recruiterCompany }) {
             status: company?.status || 'Pending' // প্রথমবার রেজিষ্ট্রেশনে ডিফল্ট Pending থাকবে
         };
 
+        console.log('submitted company profile data:', company);
+
         // লোকাল স্টেট আপডেট ও এডিট মোড ক্লোজ
         setCompany(updatedCompanyData);
         setErrors({});
