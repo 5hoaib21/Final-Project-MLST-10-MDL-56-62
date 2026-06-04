@@ -45,6 +45,7 @@ export default function PostJobPage() {
 
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
+    
 
     const newErrors = {};
     if (!data.jobTitle) newErrors.jobTitle = "Job title is required";
@@ -81,7 +82,7 @@ export default function PostJobPage() {
       e.target.reset();
       toast.success("Job posted successfully!");
       setIsRemote(false);
-      redirect('/dashboard/recruiter')
+      redirect('/dashboard/recruiter/jobs')
     }
   };
 

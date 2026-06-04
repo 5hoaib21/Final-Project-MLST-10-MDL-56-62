@@ -34,7 +34,7 @@ const RecruiterJobsPage = async () => {
         {/* Hero UI Resizable Table Container */}
         <Table aria-label="Company jobs management table" className="bg-[#121214]">
           <Table.ResizableContainer>
-            <Table.Content aria-label="Table with resizable columns" className="min-w-[800px]">
+            <Table.Content aria-label="Table with resizable columns" className="min-w-200">
               
               <Table.Header>
                 <Table.Column isRowHeader defaultWidth="2fr" id="jobTitle" minWidth={220}>

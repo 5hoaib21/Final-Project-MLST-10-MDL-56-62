@@ -35,7 +35,7 @@ const Navbar = () => {
         
         {/* LEFT: Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold">
+          <div className="w-8 h-8 rounded-lg bg-linear-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold">
             P
           </div>
           <span className="text-white font-semibold text-lg">
@@ -66,7 +66,10 @@ const Navbar = () => {
             <div className="w-20 h-8 bg-white/10 animate-pulse rounded-xl" /> // Skeleton loading
           ) : user ? (
             <>
+            <Link href={'/dashboard/recruiter'}>
+
               <span className="text-sm text-zinc-400">Hi, {user.name.split(" ")[0]}. !</span>
+            </Link>
               <Button 
                 onClick={handleSignOut} 
                 variant="flat" 
