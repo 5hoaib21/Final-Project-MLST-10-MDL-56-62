@@ -3,7 +3,7 @@
 import { serverMutation } from "../core/server";
 
 export const createJob = async (newJobData) => {
-  return serverMutation('/api/jobs', newJobData)
+  return await serverMutation('/api/jobs', newJobData)
 }
 
 // const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;

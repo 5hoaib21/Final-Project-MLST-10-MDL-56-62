@@ -3,7 +3,7 @@
 import { serverMutation } from "../core/server";
 
 export const createCompany = async (newCompanyData) => {
-  return serverMutation("/api/companies", newCompanyData);
+  return await serverMutation("/api/companies", newCompanyData);
 };
 
 // const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;

@@ -2,10 +2,11 @@ import { getCompanyJobs } from "@/lib/api/jobs";
 import React from "react";
 import { Chip, Table, Button, Tooltip } from "@heroui/react";
 import { Eye, Pencil, TrashBin, Globe } from "@gravity-ui/icons";
+import { getLoggedInRecruiterCompany } from "@/lib/api/companies";
 
 const RecruiterJobsPage = async () => {
-  const companyId = 'company_123'; //todo: dynamic analytics or session 
-  const jobs = await getCompanyJobs(companyId);
+  const company = await getLoggedInRecruiterCompany();
+  const jobs = await getCompanyJobs(company._id);
 
   // স্ট্যাটাস চিপের কালার নির্ধারণ করার ফাংশন
   const getStatusColor = (status) => {
@@ -25,7 +26,7 @@ const RecruiterJobsPage = async () => {
         
         {/* Header Section */}
         <div className="mb-6">
-          <h1 className="text-2xl font-semibold tracking-tight">Manage All Jobs</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Manage <span className="text-blue-500"> {company?.name}</span>&apos;s Jobs</h1>
           <p className="text-zinc-400 text-sm mt-1">
             Monitor, edit, or remove your company&apos;s posted jobs inside HireLoop.
           </p>

@@ -14,7 +14,7 @@ const Navbar = () => {
 
   const navLinks = [
     { name: "Browse Jobs", href: "/jobs" },
-    { name: "Company", href: "/company" },
+    { name: "Company", href: "/dashboard/recruiter/company" },
     { name: "Pricing", href: "/pricing" },
   ];
 

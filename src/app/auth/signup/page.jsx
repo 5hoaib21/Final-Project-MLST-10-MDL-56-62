@@ -45,7 +45,7 @@ export default function SignupPage() {
         password,
         name,
         role,
-        callbackURL: "/",
+        callbackURL: "/signup",
       });
 
       if (authError) {
