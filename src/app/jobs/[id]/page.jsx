@@ -1,177 +1,157 @@
-import { gerJobById } from '@/lib/api/jobs';
 import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button, Card } from '@heroui/react';
-import { 
-    Briefcase, 
-    Clock, 
-    Calendar,
-    CircleCheck, 
-    ArrowLeft 
-} from '@gravity-ui/icons';
+import { gerJobById } from '@/lib/api/jobs';
+import { Button, Link } from '@heroui/react';
+import { MapPin, Briefcase, CircleDollar, Calendar, ArrowUpRight } from '@gravity-ui/icons';
 
-import { FaCoins } from 'react-icons/fa';
+const Page = async ({ params }) => {
+    const { id } = await params;
+    const job = await gerJobById(id);
 
-const JobDetailsPage = async ({ params }) => {
-  const { id } = await params;
-  const job = await gerJobById(id);
+    // Guard clause in case API fails or returns null
+    if (!job) {
+        return (
+            <div className="w-full min-h-screen bg-zinc-950 flex flex-col justify-center items-center text-white p-6">
+                <p className="text-zinc-400 text-lg">Job position could not be found or is no longer active.</p>
+            </div>
+        );
+    }
 
-  if (!job) {
+    // Salary string utility formatter (Apnar friend er format custom wrapper)
+    const formatSalary = (amount) => {
+        if (!amount) return "0";
+        const numericAmount = parseInt(amount, 10);
+        return numericAmount >= 1000 ? `${(numericAmount / 1000).toLocaleString()}k` : amount;
+    };
+
+    // Humanize standard date formats (e.g. 2026-07-29 -> July 29, 2026)
+    const formatDate = (dateString) => {
+        if (!dateString) return "N/A";
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    };
+
     return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-950 text-white">
-        <p className="text-zinc-400">Job details data load kora jayni.</p>
-      </div>
+        <main className="w-full min-h-screen bg-zinc-950 text-zinc-100 p-6 md:p-12 lg:p-16 pt-32">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+
+                {/* LEFT BLOCK: Corporate Identity, Description & Details (Spans 2 columns) */}
+                <div className="lg:col-span-2 space-y-8">
+
+                    {/* Header Group */}
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-4">
+                            {job.companyLogo && (
+                                <img
+                                    src={job.companyLogo}
+                                    alt={`${job.companyName} Branding`}
+                                    className="w-14 h-14 object-contain bg-zinc-900 border border-zinc-800 p-2 rounded-xl"
+                                />
+                            )}
+                            <div>
+                                <h2 className="text-xl font-medium text-zinc-300">{job.companyName}</h2>
+                                <p className="text-sm text-zinc-500 capitalize">{job.jobCategory} Role</p>
+                            </div>
+                        </div>
+
+                        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
+                            {job.jobTitle}
+                        </h1>
+                    </div>
+
+                    {/* Section: Responsibilities */}
+                    <section className="space-y-3">
+                        <h3 className="text-xl font-semibold text-white">Core Responsibilities</h3>
+                        <p className="text-zinc-300 text-base leading-relaxed whitespace-pre-line">
+                            {job.responsibilities || "No description responsibilities specified for this listing."}
+                        </p>
+                    </section>
+
+                    {/* Section: Core Technical Requirements */}
+                    <section className="space-y-3">
+                        <h3 className="text-xl font-semibold text-white">Requirements & Credentials</h3>
+                        <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-2xl p-5">
+                            <p className="text-zinc-300 text-base leading-relaxed">
+                                {job.requirements || "Standard industry standards apply."}
+                            </p>
+                        </div>
+                    </section>
+
+                    {/* Section: Benefits & Perks */}
+                    {job.benefits && (
+                        <section className="space-y-3">
+                            <h3 className="text-xl font-semibold text-white">Benefits & Perks</h3>
+                            <p className="text-zinc-300 text-base leading-relaxed">
+                                {job.benefits}
+                            </p>
+                        </section>
+                    )}
+                </div>
+
+                {/* RIGHT BLOCK: Core Structural Metadata Panel Widget */}
+                <aside className="bg-zinc-900 border border-zinc-800/80 rounded-[32px] p-6 lg:sticky lg:top-28 space-y-6 shadow-xl">
+                    <h3 className="text-lg font-semibold text-white">Job Overview</h3>
+
+                    <div className="space-y-4">
+                        {/* Location / Work Environment Element */}
+                        <div className="flex items-start gap-3">
+                            <MapPin className="text-purple-400 w-5 h-5 mt-0.5 flex-shrink-0" />
+                            <div>
+                                <span className="text-xs text-zinc-500 block">Workplace</span>
+                                <span className="text-sm font-medium text-zinc-200">
+                                    {job.isRemote ? "Remote Friendly" : "On-site"}
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Position Type Element */}
+                        <div className="flex items-start gap-3">
+                            <Briefcase className="text-purple-400 w-5 h-5 mt-0.5 flex-shrink-0" />
+                            <div>
+                                <span className="text-xs text-zinc-500 block">Job Type</span>
+                                <span className="text-sm font-medium text-zinc-200 capitalize">{job.jobType}</span>
+                            </div>
+                        </div>
+
+                        {/* Comp/Salary Element */}
+                        <div className="flex items-start gap-3">
+                            <CircleDollar className="text-purple-400 w-5 h-5 mt-0.5 flex-shrink-0" />
+                            <div>
+                                <span className="text-xs text-zinc-500 block">Salary Range</span>
+                                <span className="text-sm font-medium text-zinc-200">
+                                    {job.minSalary && job.maxSalary
+                                        ? `$${formatSalary(job.minSalary)} – $${formatSalary(job.maxSalary)} ${job.currency || "USD"} / year`
+                                        : "Competitive Salary"}
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Deadline Element */}
+                        <div className="flex items-start gap-3">
+                            <Calendar className="text-purple-400 w-5 h-5 mt-0.5 flex-shrink-0" />
+                            <div>
+                                <span className="text-xs text-zinc-500 block">Application Deadline</span>
+                                <span className="text-sm font-medium text-zinc-200">{formatDate(job.deadline)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Action Button: Apply Routing Link Container */}
+                    <Button
+                        as={Link}
+                        href={`/jobs/${id}/apply`}
+                        className="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-6 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-2 text-md"
+                        endContent={<ArrowUpRight className="w-4 h-4" />}
+                    >
+                        Apply For This Job
+                    </Button>
+                </aside>
+
+            </div>
+        </main>
     );
-  }
-
-  // Comma strings ke lists-e convert korar utility framework handles
-  const splitData = (str) => str ? str.split(',').map(item => item.trim()) : [];
-  
-  const responsibilityList = splitData(job.responsibilities);
-  const requirementList = splitData(job.requirements);
-  const benefitList = splitData(job.benefits);
-
-  return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 pt-32 pb-16 px-4">
-      <div className="max-w-4xl mx-auto flex flex-col gap-8">
-        
-        {/* BACK TO BROWSE ACTION CONTROL */}
-        <Link 
-          href="/jobs" 
-          className="flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-white transition w-fit group"
-        >
-          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-          Back to Browse Jobs
-        </Link>
-
-        {/* HERO CARD CONTAINER CONTAINER */}
-        <Card className="w-full bg-zinc-900/40 border border-zinc-800 p-6 sm:p-8 backdrop-blur-md rounded-2xl shadow-sm">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-6 border-b border-zinc-800">
-            
-            {/* Left: Company Logo and Titles Metadata */}
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-xl bg-zinc-800 border border-zinc-700 overflow-hidden flex items-center justify-center relative p-2">
-                <Image
-                  src={job.companyLogo || "https://i.ibb.co.com/qLc8nDHZ/spotify.png"}
-                  alt={`${job.companyName} Logo`}
-                  width={64}
-                  height={64}
-                  className="object-contain"
-                  unoptimized // Universal support fallback handling 
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">{job.jobTitle}</h1>
-                <p className="text-md font-medium text-purple-400">{job.companyName}</p>
-              </div>
-            </div>
-
-            {/* Right: Apply Primary Control Target */}
-            <Button 
-              color="primary"
-              className="w-full sm:w-auto font-semibold rounded-xl text-sm h-12 px-8 shadow-lg shadow-purple-500/10"
-            >
-              Apply Now
-            </Button>
-          </div>
-
-          {/* SYSTEM TAG PILLS BADGES INFO */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6">
-            <div className="flex items-center gap-3 bg-zinc-900/80 border border-zinc-800/80 p-3 rounded-xl">
-              <Briefcase className="text-purple-400" size={18} />
-              <div className="flex flex-col">
-                <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Category</span>
-                <span className="text-sm font-medium text-zinc-200 capitalize">{job.jobCategory}</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 bg-zinc-900/80 border border-zinc-800/80 p-3 rounded-xl">
-              <Clock className="text-pink-400" size={18} />
-              <div className="flex flex-col">
-                <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Job Type</span>
-                <span className="text-sm font-medium text-zinc-200 capitalize">
-                  {job.jobType} {job.isRemote && '(Remote)'}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 bg-zinc-900/80 border border-zinc-800/80 p-3 rounded-xl">
-              <FaCoins className="text-emerald-400" size={18} />
-              <div className="flex flex-col">
-                <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Salary Range</span>
-                <span className="text-sm font-medium text-zinc-200">
-                  {job.minSalary}-{job.maxSalary} {job.currency}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 bg-zinc-900/80 border border-zinc-800/80 p-3 rounded-xl">
-              <Calendar className="text-amber-400" size={18} />
-              <div className="flex flex-col">
-                <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Deadline</span>
-                <span className="text-sm font-medium text-zinc-200">{job.deadline}</span>
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        {/* DETAILS STRUCTURAL CORE MARKUP GRID */}
-        <div className="grid grid-cols-1 gap-6">
-          
-          {/* Section: Requirements */}
-          <Card className="bg-zinc-900/20 border border-zinc-800/60 p-6 rounded-2xl">
-            <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <span className="w-1.5 h-5 bg-purple-500 rounded-full inline-block" />
-              Requirements
-            </h3>
-            <ul className="flex flex-col gap-3">
-              {requirementList.map((req, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 text-zinc-300 text-sm leading-relaxed">
-                  <CircleCheck className="text-purple-400 mt-0.5 shrink-0" size={16} />
-                  {req}
-                </li>
-              ))}
-            </ul>
-          </Card>
-
-          {/* Section: Responsibilities */}
-          <Card className="bg-zinc-900/20 border border-zinc-800/60 p-6 rounded-2xl">
-            <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <span className="w-1.5 h-5 bg-pink-500 rounded-full inline-block" />
-              Key Responsibilities
-            </h3>
-            <ul className="flex flex-col gap-3">
-              {responsibilityList.map((res, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 text-zinc-300 text-sm leading-relaxed">
-                  <CircleCheck className="text-pink-400 mt-0.5 shrink-0" size={16} />
-                  {res}
-                </li>
-              ))}
-            </ul>
-          </Card>
-
-          {/* Section: Benefits */}
-          <Card className="bg-zinc-900/20 border border-zinc-800/60 p-6 rounded-2xl">
-            <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <span className="w-1.5 h-5 bg-emerald-500 rounded-full inline-block" />
-              Perks & Benefits
-            </h3>
-            <ul className="flex flex-col gap-3">
-              {benefitList.map((benefit, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 text-zinc-300 text-sm leading-relaxed">
-                  <CircleCheck className="text-emerald-400 mt-0.5 shrink-0" size={16} />
-                  {benefit}
-                </li>
-              ))}
-            </ul>
-          </Card>
-
-        </div>
-
-      </div>
-    </div>
-  );
 };
 
-export default JobDetailsPage;
+export default Page;
