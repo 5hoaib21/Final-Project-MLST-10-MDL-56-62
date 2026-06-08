@@ -12,6 +12,7 @@ import { gerPlanById } from "@/lib/api/plans";
 const ApplyPage = async ({ params }) => {
   const { id } = await params;
   const user = await getUserSession();
+  console.log('user', user);
 
   if (!user) {
     redirect(`/auth/signin?redirect=/jobs/${id}/apply`);
@@ -48,7 +49,6 @@ const ApplyPage = async ({ params }) => {
 
 
   const plan = await gerPlanById(user?.plan || 'seeker_free')
-  console.log('user plan info:', plan);
   
 
 

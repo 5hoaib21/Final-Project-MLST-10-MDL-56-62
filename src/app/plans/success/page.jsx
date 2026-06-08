@@ -29,7 +29,11 @@ export default async function Success({ searchParams }) {
     // 💡 Now metadata is defined and safe to read properties from!
     const subsInfo = {
       email: customerEmail,
+<<<<<<< HEAD
       planId: metadata?.planId || "free" // Fallback input safety tracking er jonno '?.' optional chaining use kora bhalo
+=======
+      planId: metadata?.planId //|| "free" // Fallback input safety tracking er jonno '?.' optional chaining use kora bhalo
+>>>>>>> 300974e (added somethng)
     };
     
     // update the user table about the new plan:
