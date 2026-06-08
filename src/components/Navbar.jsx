@@ -13,9 +13,18 @@ const Navbar = () => {
   const user = session?.user;
 
   const navLinks = [
-    { name: "Browse Jobs", href: "/jobs" },
-    { name: "Company", href: "/dashboard/recruiter/company" },
-    { name: "Pricing", href: "/pricing" },
+    { 
+      name: "Browse Jobs", 
+      href: "/jobs" 
+    },
+    { 
+      name: "Company", 
+      href: "/dashboard/recruiter/company" 
+    },
+    { 
+      name: "Pricing", 
+      href: "/plans" 
+    },
   ];
 
   // Sign out handler
