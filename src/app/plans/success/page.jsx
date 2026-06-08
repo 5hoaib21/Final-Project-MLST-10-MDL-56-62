@@ -13,7 +13,8 @@ export default async function Success({ searchParams }) {
 
   const {
     status,
-    customer_details: { email: customerEmail }
+    customer_details: { email: customerEmail },
+    metadata: 
   } = await stripe.checkout.sessions.retrieve(session_id, {
     expand: ['line_items', 'payment_intent']
   });
@@ -23,6 +24,8 @@ export default async function Success({ searchParams }) {
   }
 
   if (status === 'complete') {
+    //update the user table about the new plan:
+
     return (
       <main className="w-full min-h-screen bg-zinc-950 text-zinc-100 pt-32 pb-16 px-4 relative overflow-hidden flex flex-col items-center justify-center">
         
@@ -82,24 +85,24 @@ export default async function Success({ searchParams }) {
 
             {/* Navigation Flow Controls (Bypassing Next.js 16 serialization issues using as="a") */}
             <div className="flex flex-col sm:flex-row gap-3 w-full mt-2">
+            <Link href={'/jobs'}>
               <Button
-                as="a"
-                href="/"
                 variant="bordered"
                 className="w-full h-11 border-zinc-800 text-zinc-300 hover:bg-zinc-800/60 hover:text-white rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2"
               >
                 <ShoppingBag size={14} />
                 Back to Explore
               </Button>
+              </Link>
+              <Link href={'/'}>
               <Button
-                as="a"
-                href="/dashboard"
                 color="primary"
                 className="w-full h-11 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-sm font-semibold tracking-wide transition-all shadow-lg shadow-purple-500/10 flex items-center justify-center gap-1.5"
               >
-                Go to Dashboard
+                Go to Home
                 <ArrowRight size={14} />
               </Button>
+              </Link>
             </div>
 
           </Card>
