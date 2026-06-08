@@ -38,7 +38,7 @@ const JobApply = ({ job, applicant }) => {
             ...formData
         };
 
-        console.log('Submitting Application:', submissionData);
+        // console.log('Submitting Application:', submissionData);
         
 
         const res = await submitApplication(submissionData)
