@@ -4,6 +4,7 @@ import { CircleCheck, ArrowRight, Envelope, ShieldCheck, ShoppingBag } from '@gr
 import Link from 'next/link';
 import React from 'react';
 import { Card, Button } from '@heroui/react';
+import { createSubscription } from '@/lib/actions/subscriptions';
 
 export default async function Success({ searchParams }) {
   const { session_id } = await searchParams;
@@ -11,10 +12,11 @@ export default async function Success({ searchParams }) {
   if (!session_id)
     throw new Error('Please provide a valid session_id (`cs_test_...`)');
 
+  // 💡 FIX: retrieve response theke metadata-keo safely destructure kora hoyeche
   const {
     status,
     customer_details: { email: customerEmail },
-    metadata: 
+    metadata // <--- Eikhane metadata pull kora holo
   } = await stripe.checkout.sessions.retrieve(session_id, {
     expand: ['line_items', 'payment_intent']
   });
@@ -24,7 +26,15 @@ export default async function Success({ searchParams }) {
   }
 
   if (status === 'complete') {
-    //update the user table about the new plan:
+    // 💡 Now metadata is defined and safe to read properties from!
+    const subsInfo = {
+      email: customerEmail,
+      planId: metadata?.planId || "free" // Fallback input safety tracking er jonno '?.' optional chaining use kora bhalo
+    };
+    
+    // update the user table about the new plan:
+    const result = await createSubscription(subsInfo);
+    console.log('result', result);
 
     return (
       <main className="w-full min-h-screen bg-zinc-950 text-zinc-100 pt-32 pb-16 px-4 relative overflow-hidden flex flex-col items-center justify-center">
@@ -83,25 +93,25 @@ export default async function Success({ searchParams }) {
               </div>
             </div>
 
-            {/* Navigation Flow Controls (Bypassing Next.js 16 serialization issues using as="a") */}
+            {/* Navigation Flow Controls */}
             <div className="flex flex-col sm:flex-row gap-3 w-full mt-2">
-            <Link href={'/jobs'}>
-              <Button
-                variant="bordered"
-                className="w-full h-11 border-zinc-800 text-zinc-300 hover:bg-zinc-800/60 hover:text-white rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2"
-              >
-                <ShoppingBag size={14} />
-                Back to Explore
-              </Button>
+              <Link href={'/jobs'} className="w-full">
+                <Button
+                  variant="bordered"
+                  className="w-full h-11 border-zinc-800 text-zinc-300 hover:bg-zinc-800/60 hover:text-white rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2"
+                >
+                  <ShoppingBag size={14} />
+                  Back to Explore
+                </Button>
               </Link>
-              <Link href={'/'}>
-              <Button
-                color="primary"
-                className="w-full h-11 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-sm font-semibold tracking-wide transition-all shadow-lg shadow-purple-500/10 flex items-center justify-center gap-1.5"
-              >
-                Go to Home
-                <ArrowRight size={14} />
-              </Button>
+              <Link href={'/'} className="w-full">
+                <Button
+                  color="primary"
+                  className="w-full h-11 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-sm font-semibold tracking-wide transition-all shadow-lg shadow-purple-500/10 flex items-center justify-center gap-1.5"
+                >
+                  Go to Home
+                  <ArrowRight size={14} />
+                </Button>
               </Link>
             </div>
 

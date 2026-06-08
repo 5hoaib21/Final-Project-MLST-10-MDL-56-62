@@ -48,6 +48,7 @@ const ApplyPage = async ({ params }) => {
 
 
   const plan = await gerPlanById(user?.plan || 'seeker_free')
+  console.log('user plan info:', plan);
   
 
 
