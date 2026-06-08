@@ -10,6 +10,7 @@ export default function PricingPage() {
   const seekerPlans = [
     {
       name: "Free",
+      id: 'seeker_free',
       price: "$0",
       period: "/forever",
       description: "Ideal for freshers starting their career journey.",
@@ -26,6 +27,7 @@ export default function PricingPage() {
     {
       name: "Pro",
       price: "$19",
+      id: 'seeker_pro',
       period: "/month",
       description: "Perfect for active job hunters looking for speed.",
       features: [
@@ -42,6 +44,7 @@ export default function PricingPage() {
     {
       name: "Premium",
       price: "$39",
+      id: 'seeker_premium',
       period: "/month",
       description: "Ultimate toolkit to stand out from the competition.",
       features: [
@@ -61,6 +64,7 @@ export default function PricingPage() {
     {
       name: "Free",
       price: "$0",
+      id: 'recruiter_free',
       period: "/forever",
       description: "Great for a company's first year of micro hiring.",
       features: [
@@ -75,6 +79,7 @@ export default function PricingPage() {
     {
       name: "Growth",
       price: "$49",
+      id: 'recruiter_growth',
       period: "/month",
       description: "Best for growing engineering & tech teams.",
       features: [
@@ -91,6 +96,7 @@ export default function PricingPage() {
     {
       name: "Enterprise",
       price: "$149",
+      id: 'recruiter_enterprise',
       period: "/month",
       description: "Comprehensive solutions for grand scale hiring.",
       features: [
@@ -182,6 +188,7 @@ export default function PricingPage() {
           </div>
 
           <form action="/api/checkout_sessions" method="POST">
+          <input type="hidden" name="plan_id" value={plan.id} />
             <section>
               <button type="submit" role="link"
               className={`w-full mt-8 h-12 rounded-2xl text-sm font-bold tracking-wide
