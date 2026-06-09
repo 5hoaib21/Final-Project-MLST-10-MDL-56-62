@@ -35,11 +35,11 @@ export async function DashboardSidebar() {
   ];
 
   const seekerNavLinks = [
-    { icon: LayoutSideContent, href: "/dashboard", label: "Dashboard" },
-    { icon: Magnifier, href: "/jobs", label: "Jobs" },
-    { icon: Bookmark, href: "/dashboard/saved-jobs", label: "Saved Jobs" },
-    { icon: FileText, href: "/dashboard/applications", label: "Applications" },
-    { icon: CreditCard, href: "/plans", label: "Billing" },
+    { icon: LayoutSideContent, href: "/dashboard/seeker", label: "Dashboard" },
+    { icon: Magnifier, href: "/dashboard/seeker/jobs", label: "Jobs" },
+    { icon: Bookmark, href: "/dashboard/seeker/saved-jobs", label: "Saved Jobs" },
+    { icon: FileText, href: "/dashboard/seeker/applications", label: "Applications" },
+    { icon: CreditCard, href: "/dashboard/seeker/billing", label: "Billing" },
     { icon: Gear, href: "/dashboard/settings", label: "Settings" },
   ];
 

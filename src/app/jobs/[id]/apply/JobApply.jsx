@@ -35,6 +35,7 @@ const JobApply = ({ job, applicant }) => {
             applicantId: applicant?.id || applicant?._id, // Backwards matching properties
             applicantName: applicant?.name,
             applicantEmail: applicant?.email,
+            status: 'applied',
             ...formData
         };
 
