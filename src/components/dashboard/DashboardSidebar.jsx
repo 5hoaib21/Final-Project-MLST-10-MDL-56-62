@@ -1,3 +1,4 @@
+import { getUserSession } from "@/lib/core/session";
 import {
   LayoutSideContentLeft,
   Bell,
@@ -7,20 +8,47 @@ import {
   Magnifier,
   Person,
   Briefcase,
+  Bookmark,
+  FileText,
+  LayoutSideContent,
+  CreditCard,
 } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
 
-export function DashboardSidebar() {
-  const navItems = [
-    { icon: House, href:'/dashboard/recruiter', label: "Home" },
-    { icon: Magnifier, href:'/dashboard/recruiter/jobs', label: "Jobs" },
-    { icon: Bell, href:'/dashboard/recruiter/jobs/new', label: "Create a Job" },
-    { icon: Briefcase, href:'/dashboard/recruiter/company', label: "Company" },
-    { icon: Envelope,href:'/dashboard/recruiter', label: "Messages" },
-    { icon: Person,href:'/dashboard/recruiter', label: "Profile" },
-    { icon: Gear,href:'/dashboard/recruiter', label: "Settings" },
+export async function DashboardSidebar() {
+
+  const user = await getUserSession()
+
+  const recruiterNavLinks = [
+    { icon: House, href: "/dashboard/recruiter", label: "Home" },
+    { icon: Magnifier, href: "/dashboard/recruiter/jobs", label: "Jobs" },
+    { icon: Bell, href: "/dashboard/recruiter/jobs/new", label: "Post a Job" },
+    {
+      icon: Briefcase,
+      href: "/dashboard/recruiter/company",
+      label: "Company Profile",
+    },
+    { icon: Envelope, href: "/dashboard/recruiter", label: "Messages" },
+    { icon: Person, href: "/dashboard/recruiter", label: "Profile" },
+    { icon: Gear, href: "/dashboard/recruiter", label: "Settings" },
   ];
+
+  const seekerNavLinks = [
+    { icon: LayoutSideContent, href: "/dashboard", label: "Dashboard" },
+    { icon: Magnifier, href: "/jobs", label: "Jobs" },
+    { icon: Bookmark, href: "/dashboard/saved-jobs", label: "Saved Jobs" },
+    { icon: FileText, href: "/dashboard/applications", label: "Applications" },
+    { icon: CreditCard, href: "/plans", label: "Billing" },
+    { icon: Gear, href: "/dashboard/settings", label: "Settings" },
+  ];
+
+  const navLinksMap = {
+    seeker : seekerNavLinks,
+    recruiter: recruiterNavLinks
+  }
+
+  const navItems = navLinksMap[user?.role || 'seeker'];
 
   const navContent = (
     <nav className="flex flex-col gap-1">

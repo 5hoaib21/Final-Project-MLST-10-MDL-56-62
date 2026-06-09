@@ -72,9 +72,9 @@ export default function PostJobForm({ company }) {
     const payload = {
       ...data,
       isRemote,
-      companyId: company._id,
-      companyName: company.name,
-      companyLogo: company.logo,
+      companyId: company?._id,
+      companyName: company?.name,
+      companyLogo: company?.logo,
       status: "active",
       isPubliclyVisible: true,
     };
@@ -123,7 +123,7 @@ export default function PostJobForm({ company }) {
             <Briefcase size={14} className="text-zinc-500" />
             Posting as:{" "}
             <span className="font-semibold text-zinc-300">
-              {company.name}
+              {company?.name}
             </span>
             <span className="text-emerald-500 font-medium bg-emerald-950/30 px-1.5 py-0.5 rounded border border-emerald-900/50">
               Approved

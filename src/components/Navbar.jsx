@@ -19,13 +19,27 @@ const Navbar = () => {
     },
     { 
       name: "Company", 
-      href: "/dashboard/recruiter/company" 
+      href: "/dashboard/recruiter" 
     },
     { 
       name: "Pricing", 
       href: "/plans" 
     },
   ];
+
+  const dashboardLinks = {
+    seeker: '/dashboard/seeker',
+    recruiter: '/dashboard/recruiter'
+  }
+
+  if(user?.email){
+    navLinks.push(
+      {
+        name: 'Dashboard',
+        href: dashboardLinks[user?.role || 'seeker']
+      }
+    )
+  }
 
   // Sign out handler
   const handleSignOut = async () => {

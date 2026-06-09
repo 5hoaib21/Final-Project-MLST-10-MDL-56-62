@@ -6,7 +6,7 @@ import { getLoggedInRecruiterCompany } from "@/lib/api/companies";
 
 const RecruiterJobsPage = async () => {
   const company = await getLoggedInRecruiterCompany();
-  const jobs = await getCompanyJobs(company._id);
+  const jobs = await getCompanyJobs(company?._id);
 
   // স্ট্যাটাস চিপের কালার নির্ধারণ করার ফাংশন
   const getStatusColor = (status) => {
