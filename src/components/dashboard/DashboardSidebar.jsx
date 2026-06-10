@@ -84,7 +84,7 @@ export async function DashboardSidebar() {
       <Drawer>
         <Button className={"lg:hidden"} variant="secondary">
           <LayoutSideContentLeft />
-          Sidebarr
+          Sidebar
         </Button>
         <Drawer.Backdrop>
           <Drawer.Content placement="left">
