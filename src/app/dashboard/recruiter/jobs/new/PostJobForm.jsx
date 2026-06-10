@@ -125,14 +125,27 @@ export default function PostJobForm({ company }) {
             <span className="font-semibold text-zinc-300">
               {company?.name}
             </span>
-            <span className="text-emerald-500 font-medium bg-emerald-950/30 px-1.5 py-0.5 rounded border border-emerald-900/50">
-              Approved
-            </span>
+            <span 
+  className={`font-medium px-1.5 py-0.5 rounded border text-xs tracking-wide transition-colors ${
+    company?.status === "Approved"
+      ? "text-emerald-500 bg-emerald-950/30 border-emerald-900/50"
+      : company?.status === "Pending"
+      ? "text-amber-500 bg-amber-950/30 border-amber-900/50"
+      : "text-zinc-400 bg-zinc-900/30 border-zinc-800" // Fallback status structure jodi uporer duitar ektao na hoy
+  }`}
+>
+  {company?.status}
+</span>
           </div>
         </div>
 
+
+      {
+        company?.status !== 'Approved' && <div>Please Wait to get Approval</div>
+      }
+
         {/* Hero UI Main Form Handler */}
-        <Form
+       { company?.status === 'Approved' && <Form
           onSubmit={handleSubmit}
           className="space-y-8"
           validationErrors={errors}
@@ -490,7 +503,7 @@ export default function PostJobForm({ company }) {
               Post Job
             </Button>
           </div>
-        </Form>
+        </Form>}
       </div>
     </div>
   );

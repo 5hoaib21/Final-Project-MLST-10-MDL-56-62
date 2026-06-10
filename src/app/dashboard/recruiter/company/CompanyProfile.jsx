@@ -120,7 +120,7 @@ export default function CompanyProfile({ recruiterCompany, recruiter }) {
       employeeCount: employeeCount || "1-10",
       description,
       logo: logoUrl || (company ? company.logo : ""),
-      status: company?.status || "Pending", // প্রথমবার রেজিষ্ট্রেশনে ডিফল্ট Pending থাকবে
+      status: company && company?.status ? company.status : "Pending", // প্রথমবার রেজিষ্ট্রেশনে ডিফল্ট Pending থাকবে
       recruiterId: recruiter?.id,
     };
 
@@ -134,11 +134,12 @@ export default function CompanyProfile({ recruiterCompany, recruiter }) {
     // console.log("Response Payload:", payload);
 
     if (payload.insertedId) {
+      const savedCompany = {...company, _id: payload.insertedId}
+      setCompany(savedCompany);
       toast.success("company profile created successfully");
     }
 
     
-    setCompany(newCompanyData);
     setErrors({});
     setIsEditing(false);
   };
