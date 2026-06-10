@@ -92,6 +92,9 @@ const CompanyApprovalTable = ({ companies = [] }) => {
                 Industry
               </Table.Column>
               <Table.Column className="pb-4 text-zinc-400 font-medium bg-transparent text-sm border-b border-neutral-800">
+                Jobs Count
+              </Table.Column>
+              <Table.Column className="pb-4 text-zinc-400 font-medium bg-transparent text-sm border-b border-neutral-800">
                 Status
               </Table.Column>
               <Table.Column className="pb-4 text-zinc-400 font-medium bg-transparent text-sm border-b border-neutral-800">
@@ -149,6 +152,14 @@ const CompanyApprovalTable = ({ companies = [] }) => {
                         size="sm"
                       >
                         {company.industry || "General"}
+                      </Chip>
+                    </Table.Cell>
+                    <Table.Cell className="py-4 align-middle">
+                      <Chip
+                        className="bg-zinc-800/40 text-zinc-400 text-xs border border-zinc-700/40 capitalize px-2 py-0.5 rounded-full"
+                        size="sm"
+                      >
+                        {company.jobCount || "N/A"}
                       </Chip>
                     </Table.Cell>
 
