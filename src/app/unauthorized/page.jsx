@@ -3,6 +3,7 @@
 import React from "react";
 import { Card, Button } from "@heroui/react";
 import { ShieldExclamation, ArrowLeft, House, LockOpen } from "@gravity-ui/icons";
+import Link from "next/link";
 
 export default function UnauthorizedPage() {
   return (
@@ -45,15 +46,16 @@ export default function UnauthorizedPage() {
 
           {/* 🛠️ Action Routing Controls (Serialization Safe "as" tags) */}
           <div className="flex flex-col gap-3 w-full">
-            <Button
-              as="a"
-              href="/auth/signin"
+            <Link
+            href={'/auth/signin'}
+            
+            
               color="primary"
               className="w-full h-11 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-sm font-semibold tracking-wide transition-all shadow-lg shadow-purple-500/10 flex items-center justify-center gap-2"
             >
               <LockOpen size={16} />
               Sign in with Another Account
-            </Button>
+            </Link>
             
             <div className="grid grid-cols-2 gap-3 w-full">
               <Button
@@ -66,15 +68,14 @@ export default function UnauthorizedPage() {
                 Go Back
               </Button>
               
-              <Button
-                as="a"
-                href="/"
-                variant="bordered"
+              <Link
+               href={'/'}
+                               variant="bordered"
                 className="w-full h-11 border-zinc-800 text-zinc-300 hover:bg-zinc-800/60 hover:text-white rounded-xl text-xs font-medium transition-all flex items-center justify-center gap-1.5"
               >
                 <House size={14} />
                 Return Home
-              </Button>
+              </Link>
             </div>
           </div>
 
