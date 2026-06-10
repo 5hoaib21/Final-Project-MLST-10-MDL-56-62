@@ -5,20 +5,20 @@ import CompanyApprovalTable from '@/components/dashboard/CompanyApprovalTable';
 
 const AdminCompaniesPage = async () => {
     const companies = await getCompanies();
-    console.log('companies', companies);
+    // console.log('companies', companies);
 
     // Handler server action or route invocation logic triggers
-    const handleApprove = async (id) => {
-        'use server';
-        // Your logic to update status to "Approved" in the DB
-        console.log("Approved company ID:", id);
-    };
+    // const handleApprove = async (id) => {
+    
+    //     // Your logic to update status to "Approved" in the DB
+    //     console.log("Approved company ID:", id);
+    // };
 
-    const handleReject = async (id) => {
-        'use server';
-        // Your logic to update status to "Rejected" in the DB
-        console.log("Rejected company ID:", id);
-    };
+    // const handleReject = async (id) => {
+        
+    //     // Your logic to update status to "Rejected" in the DB
+    //     console.log("Rejected company ID:", id);
+    // };
 
     return (
         <div className="min-h-screen bg-[#0d0d0d] p-8">
@@ -31,8 +31,7 @@ const AdminCompaniesPage = async () => {
             
             <CompanyApprovalTable 
                 companies={companies} 
-                onApprove={handleApprove}
-                onReject={handleReject}
+               
             />
         </div>
     );

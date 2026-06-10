@@ -2,9 +2,27 @@
 
 import React from "react";
 import { Table, Chip } from "@heroui/react";
+import { updateCompany } from "@/lib/actions/companies";
+import toast from "react-hot-toast";
 
-const CompanyApprovalTable = ({ companies = [], onApprove, onReject }) => {
+const CompanyApprovalTable = ({ companies = [] }) => {
+  // console.log('companies', companies);
   // Dynamic status indicators with bullet styles
+
+  const onApprove = async (id) => {
+    const result = await updateCompany(id, {status: 'Approved'})
+    if(result.modifiedCount){
+      toast.success(`Approved company ID: ${companies?.name}`);
+    }
+  }
+
+  const onReject = async (id) => {
+    const result = await updateCompany(id, {status: 'Rejected'})
+    if(result.modifiedCount){
+      toast.success(`Approved company ID: ${companies?.name}`)
+    }
+  }
+
   const renderStatus = (status = "Pending") => {
     const s = status.toLowerCase();
     if (s === "approved") {
@@ -147,7 +165,7 @@ const CompanyApprovalTable = ({ companies = [], onApprove, onReject }) => {
                         {currentStatus !== "approved" && (
                           <button
                             onClick={() =>
-                              onApprove && onApprove(company._id?.$oid)
+                              onApprove(company._id)
                             }
                             className="bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-500 border border-emerald-900/50 text-xs font-semibold px-3 py-1.5 rounded transition-all active:scale-[0.98]"
                           >
@@ -158,7 +176,7 @@ const CompanyApprovalTable = ({ companies = [], onApprove, onReject }) => {
                         {currentStatus !== "rejected" && (
                           <button
                             onClick={() =>
-                              onReject && onReject(company._id?.$oid)
+                              onReject(company._id)
                             }
                             className="bg-red-950/30 hover:bg-red-900/50 text-red-400 border border-red-950/40 text-xs font-semibold px-3 py-1.5 rounded transition-all active:scale-[0.98]"
                           >
